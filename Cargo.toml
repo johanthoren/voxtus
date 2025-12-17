@@ -1,0 +1,74 @@
+[package]
+name = "voxtus"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+authors = ["Johan Thorén"]
+description = "A command-line tool for transcribing YouTube videos and local media files to text"
+license = "AGPL-3.0-or-later"
+repository = "https://github.com/johanthoren/voxtus"
+readme = "README.md"
+keywords = ["transcription", "whisper", "youtube", "audio", "cli"]
+categories = ["command-line-utilities", "multimedia"]
+
+[[bin]]
+name = "voxtus"
+path = "src/main.rs"
+
+[features]
+default = ["youtube", "whisper"]
+whisper = ["dep:whisper-rs", "dep:reqwest", "dep:tokio"]
+youtube = ["dep:yt-dlp", "dep:tokio"]
+
+[dependencies]
+# HTTP client for model downloads
+reqwest = { version = "0.12", optional = true }
+
+# CLI parsing
+clap = { version = "4", features = ["derive"] }
+
+# Logging
+log = "0.4"
+fern = "0.7"
+chrono = "0.4"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Whisper transcription (whisper.cpp bindings) - optional
+whisper-rs = { version = "0.15", optional = true }
+
+# YouTube downloading - optional
+yt-dlp = { version = "1.4", optional = true }
+
+# Async runtime (required by yt-dlp) - optional
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "io-util", "fs", "process", "sync"], optional = true }
+
+# Temp file management
+tempfile = "3"
+
+# Signal handling
+ctrlc = "3"
+
+# Error handling
+thiserror = "2"
+
+# Path handling
+dirs = "6"
+
+[dev-dependencies]
+# CLI testing
+assert_cmd = "2"
+predicates = "3"
+
+# Property-based testing
+proptest = "1"
+
+# Temp files in tests
+tempfile = "3"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
