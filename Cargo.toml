@@ -2,7 +2,7 @@
 name = "voxtus"
 version = "0.1.0"
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.88"
 authors = ["Johan Thorén"]
 description = "A command-line tool for transcribing YouTube videos and local media files to text"
 license = "AGPL-3.0-or-later"
