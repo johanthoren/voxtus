@@ -322,7 +322,7 @@ mod tests {
             Just("SRT"),
             Just("VTT"),
         ]) {
-            prop_assert!(parse_formats(&format, false).is_ok());
+            prop_assert!(parse_formats(format, false).is_ok());
         }
 
         #[test]

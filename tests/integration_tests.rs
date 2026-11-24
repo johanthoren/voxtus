@@ -2,14 +2,12 @@
 // Copyright (C) 2024 Johan Thorén <johan@thoren.xyz>
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-use assert_cmd::cargo::cargo_bin;
-use predicates::prelude::*;
 use std::fs;
 use std::process::Command;
 
 #[test]
 fn test_cli_help() {
-    let mut cmd = Command::new(cargo_bin("voxtus"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("voxtus"));
     let output = cmd.arg("--help").output().unwrap();
     assert!(output.status.success());
     assert!(String::from_utf8_lossy(&output.stdout).contains("Usage: voxtus"));
@@ -17,7 +15,7 @@ fn test_cli_help() {
 
 #[test]
 fn test_cli_list_models() {
-    let mut cmd = Command::new(cargo_bin("voxtus"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("voxtus"));
     let output = cmd.arg("--list-models").output().unwrap();
     assert!(output.status.success());
     assert!(String::from_utf8_lossy(&output.stdout).contains("Available Whisper Models"));
@@ -28,7 +26,7 @@ fn test_transcribe_local_file() {
     let temp_dir = tempfile::tempdir().unwrap();
     let output_dir = temp_dir.path();
 
-    let mut cmd = Command::new(cargo_bin("voxtus"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("voxtus"));
     let output = cmd
         .arg("tests/data/sample.mp3")
         .arg("--model")
@@ -56,7 +54,7 @@ fn test_transcribe_multiple_formats() {
     let temp_dir = tempfile::tempdir().unwrap();
     let output_dir = temp_dir.path();
 
-    let mut cmd = Command::new(cargo_bin("voxtus"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("voxtus"));
     let output = cmd
         .arg("tests/data/sample.mp3")
         .arg("--model")
@@ -79,7 +77,7 @@ fn test_transcribe_verbose() {
     let temp_dir = tempfile::tempdir().unwrap();
     let output_dir = temp_dir.path();
 
-    let mut cmd = Command::new(cargo_bin("voxtus"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("voxtus"));
     let output = cmd
         .arg("tests/data/sample.mp3")
         .arg("--model")
