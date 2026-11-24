@@ -2,7 +2,7 @@
 name = "voxtus"
 version = "0.1.0"
 edition = "2024"
-rust-version = "1.88"
+rust-version = "1.89"
 authors = ["Johan Thorén"]
 description = "A command-line tool for transcribing YouTube videos and local media files to text"
 license = "AGPL-3.0-or-later"
@@ -40,7 +40,7 @@ serde_json = "1"
 whisper-rs = { version = "0.15", optional = true }
 
 # YouTube downloading - optional
-yt-dlp = { version = "1.4", optional = true }
+yt-dlp = { version = "2.10.0", optional = true }
 
 # Async runtime (required by yt-dlp) - optional
 tokio = { version = "1", features = ["rt-multi-thread", "macros", "io-util", "fs", "process", "sync"], optional = true }

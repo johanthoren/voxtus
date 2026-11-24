@@ -18,7 +18,7 @@ A command-line tool for transcribing YouTube videos and local media files to tex
 
 ### Prerequisites
 
-- [Rust](https://rustup.rs/) (1.88+)
+- [Rust](https://rustup.rs/) (1.89+)
 - [FFmpeg](https://ffmpeg.org/) in your PATH
 - CMake (for building whisper-rs)
 
