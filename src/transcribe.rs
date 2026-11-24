@@ -204,8 +204,8 @@ fn run_whisper(
     let audio_len = audio_bytes.len() / 4;
     let mut audio_data = Vec::with_capacity(audio_len);
 
-    for chunk in audio_bytes.chunks_exact(4) {
-        let val = f32::from_le_bytes(chunk.try_into().unwrap());
+    for chunk in audio_bytes.as_chunks::<4>().0 {
+        let val = f32::from_le_bytes(*chunk);
         audio_data.push(val);
     }
 

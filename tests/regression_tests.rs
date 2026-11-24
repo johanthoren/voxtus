@@ -2,7 +2,6 @@
 // Copyright (C) 2024 Johan Thorén <johan@thoren.xyz>
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-use assert_cmd::cargo::cargo_bin;
 use std::fs;
 use std::process::Command;
 
@@ -11,7 +10,7 @@ fn test_regression_output() {
     let temp_dir = tempfile::tempdir().unwrap();
     let output_dir = temp_dir.path();
 
-    let mut cmd = Command::new(cargo_bin("voxtus"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("voxtus"));
     let output = cmd
         .arg("tests/data/sample.mp3")
         .arg("--model")
