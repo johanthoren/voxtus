@@ -10,6 +10,7 @@ repository = "https://github.com/johanthoren/voxtus"
 readme = "README.md"
 keywords = ["transcription", "whisper", "youtube", "audio", "cli"]
 categories = ["command-line-utilities", "multimedia"]
+exclude = ["tests/data/*"]
 
 [[bin]]
 name = "voxtus"
