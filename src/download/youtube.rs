@@ -32,7 +32,7 @@ fn get_libs_dir() -> Result<PathBuf> {
 /// Download audio from URL. Returns m4a path and video info.
 #[cfg(feature = "youtube")]
 pub async fn download_audio(url: &str, output_dir: &Path) -> Result<(PathBuf, VideoInfo)> {
-    use yt_dlp::Youtube;
+    use yt_dlp::Downloader;
 
     let libs_dir = get_libs_dir()?;
     let yt_dlp_path = libs_dir.join(if cfg!(windows) {
@@ -47,13 +47,17 @@ pub async fn download_audio(url: &str, output_dir: &Path) -> Result<(PathBuf, Vi
     });
 
     // Initialize YouTube client, downloading binaries if needed
-    let youtube: Youtube = if yt_dlp_path.exists() && ffmpeg_path.exists() {
+    let youtube: Downloader = if yt_dlp_path.exists() && ffmpeg_path.exists() {
         let libs = yt_dlp::client::deps::Libraries::new(yt_dlp_path, ffmpeg_path);
-        Youtube::new(libs, output_dir.to_path_buf())
+        Downloader::builder(libs, output_dir.to_path_buf())
+            .build()
             .await
             .map_err(|e| Error::DownloadFailed(e.to_string()))?
     } else {
-        Youtube::with_new_binaries(libs_dir, output_dir.to_path_buf())
+        Downloader::with_new_binaries(libs_dir, output_dir.to_path_buf())
+            .await
+            .map_err(|e| Error::DownloadFailed(e.to_string()))?
+            .build()
             .await
             .map_err(|e| Error::DownloadFailed(e.to_string()))?
     };
@@ -71,7 +75,7 @@ pub async fn download_audio(url: &str, output_dir: &Path) -> Result<(PathBuf, Vi
     // Download audio stream as m4a (native YouTube format)
     // We'll convert to mp3 later using our own ffmpeg
     let audio_path = youtube
-        .download_audio_stream_from_url(url.to_string(), "audio.m4a")
+        .download_audio_stream(&video, "audio.m4a")
         .await
         .map_err(|e| Error::DownloadFailed(format!("Failed to download audio: {}", e)))?;
 
